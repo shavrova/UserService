@@ -1,0 +1,38 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
+
+# Project exclude paths
+/src/main/java/com/tms/api/users/service/
+/src/main/java/com/tms/api/users/util/bind/
+/src/main/java/com/tms/api/users/util/http/
+/src/main/java/com/tms/api/users/util/interceptor/
+/src/main/java/com/tms/api/users/util/util/
