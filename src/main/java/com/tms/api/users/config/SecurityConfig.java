@@ -2,6 +2,7 @@ package com.tms.api.users.config;
 
 import com.tms.api.users.filter.AuthenticationFilter;
 import com.tms.api.users.userService.UserService;
+import com.tms.api.users.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -10,8 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.Objects;
 
 @Configuration
 @EnableWebSecurity
@@ -22,8 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public SecurityConfig(Environment environment, UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder)
-    {
+    public SecurityConfig(Environment environment, UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.environment = environment;
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -38,10 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
     }
 
-    private AuthenticationFilter getAuthenticationFilter() throws Exception
-    {
+    private AuthenticationFilter getAuthenticationFilter() throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(userService, environment, authenticationManager());
-        authenticationFilter.setFilterProcessesUrl(Objects.requireNonNull(environment.getProperty("login.url.path")));
+        authenticationFilter.setFilterProcessesUrl(environment.getProperty("login.path"));
         return authenticationFilter;
     }
 
