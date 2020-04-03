@@ -2,7 +2,8 @@ package com.tms.api.users.mapper;
 
 import com.tms.api.users.dto.UserDto;
 import com.tms.api.users.entity.User;
-import com.tms.api.users.model.user.UserRequestModel;
+import com.tms.api.users.model.user.CreateUserRequestModel;
+import com.tms.api.users.model.user.UpdateUserRequestModel;
 import com.tms.api.users.model.user.UserResponseModel;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -28,8 +29,13 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public UserDto requestToDto(UserRequestModel userRequestModel) {
-        return modelMapper.map(userRequestModel, UserDto.class);
+    public UserDto createRequestToDto(CreateUserRequestModel createUserRequestModel) {
+        return modelMapper.map(createUserRequestModel, UserDto.class);
+    }
+
+    @Override
+    public UserDto updateRequestToDto(UpdateUserRequestModel updateUserRequestModel) {
+        return modelMapper.map(updateUserRequestModel, UserDto.class);
     }
 
     @Override

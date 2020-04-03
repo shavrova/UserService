@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.tms.api.users.dto.UserDto;
 import com.tms.api.users.model.login.LoginRequestModel;
-import com.tms.api.users.userService.UserService;
+import com.tms.api.users.service.UserService;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

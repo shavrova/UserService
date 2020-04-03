@@ -1,8 +1,7 @@
 package com.tms.api.users.config;
 
 import com.tms.api.users.filter.AuthenticationFilter;
-import com.tms.api.users.userService.UserService;
-import com.tms.api.users.util.Constant;
+import com.tms.api.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
