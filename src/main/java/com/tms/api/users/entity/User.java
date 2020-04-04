@@ -1,27 +1,22 @@
 package com.tms.api.users.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
+@Builder
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class User implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity implements Serializable {
 
     @Column(nullable = false, length = 50, name = "first_name")
     private String firstName;
@@ -56,10 +51,27 @@ public class User implements Serializable {
         updatedAt = new Date();
     }
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
+
     public User(String firstName, String lastName, String email, String encryptedPassword) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.encryptedPassword = encryptedPassword;
+    }
+
+    public User(String firstName, String lastName, String email, String encryptedPassword, Collection<Role> roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.encryptedPassword = encryptedPassword;
+        this.roles = roles;
     }
 }
