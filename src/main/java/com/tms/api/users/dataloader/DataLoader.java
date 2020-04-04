@@ -2,8 +2,7 @@ package com.tms.api.users.dataloader;
 
 import com.tms.api.users.entity.Role;
 import com.tms.api.users.entity.User;
-import com.tms.api.users.mapper.UserMapper;
-import com.tms.api.users.service.UserService;
+import com.tms.api.users.repository.UserRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,14 +14,12 @@ import java.util.Date;
 @Component
 public class DataLoader implements ApplicationRunner {
 
-    private UserService userService;
+    private UserRepository repository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private UserMapper mapper;
 
-    public DataLoader(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper mapper) {
-        this.userService = userService;
+    public DataLoader(UserRepository repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.repository = repository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.mapper = mapper;
     }
 
     public void run(ApplicationArguments args) {
@@ -35,7 +32,6 @@ public class DataLoader implements ApplicationRunner {
                 .updatedAt(new Date())
                 .roles(Collections.singletonList(new Role("ROLE_ADMIN")))
                 .build();
-        userService.createUser(mapper.entityToDto(user));
-
+        repository.save(user);
     }
 }
