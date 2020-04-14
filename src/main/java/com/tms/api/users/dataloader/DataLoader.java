@@ -8,8 +8,10 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -24,14 +26,17 @@ public class DataLoader implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         User user = User.builder()
+                .userId(UUID.randomUUID().toString())
                 .firstName("Karl the Admin")
                 .lastName("Admin the Karl")
                 .email("admin@gmail.com")
                 .encryptedPassword(bCryptPasswordEncoder.encode("12345678"))
                 .createdAt(new Date())
                 .updatedAt(new Date())
-                .roles(Collections.singletonList(new Role("ROLE_ADMIN")))
+                .roles(Collections.singletonList(new Role("ADMIN")))
                 .build();
-        repository.save(user);
+        try {
+            repository.save(user);
+        }catch (Exception ex){}
     }
 }
