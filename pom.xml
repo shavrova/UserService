@@ -11,7 +11,7 @@
     <groupId>com.tms.api.users</groupId>
     <artifactId>userservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>userservice</name>
+    <name>UserService</name>
     <description>TMS App User Service</description>
     <properties>
         <java.version>11</java.version>
