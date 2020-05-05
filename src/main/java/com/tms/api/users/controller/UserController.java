@@ -1,12 +1,12 @@
 package com.tms.api.users.controller;
 
 
-import com.tms.api.users.dto.UserDto;
-import com.tms.api.users.mapper.UserMapper;
-import com.tms.api.users.model.user.CreateUserRequestModel;
-import com.tms.api.users.model.user.UpdateUserRequestModel;
-import com.tms.api.users.model.user.UserResponseModel;
-import com.tms.api.users.service.UserService;
+import com.tms.api.users.data.dto.UserDto;
+import com.tms.api.users.service.mapper.UserMapper;
+import com.tms.api.users.data.model.user.CreateUserRequestModel;
+import com.tms.api.users.data.model.user.UpdateUserRequestModel;
+import com.tms.api.users.data.model.user.UserResponseModel;
+import com.tms.api.users.service.user.UserService;
 import com.tms.api.users.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -38,6 +38,11 @@ public class UserController {
         return "Secret: " + env.getProperty("jwt.secret") + "\ntest.prop = " + env.getProperty("test.prop");
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseModel> getUser(@PathVariable("id") String id) {
+        return ResponseEntity.ok(mapper.createResponseFromDto(service.getUser(id)));
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponseModel> createUser(@Valid @RequestBody CreateUserRequestModel createdUser) {
@@ -64,8 +69,4 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseModel> getUser(@PathVariable("id") String id) {
-        return ResponseEntity.ok(mapper.createResponseFromDto(service.getUser(id)));
-    }
 }

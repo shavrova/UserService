@@ -1,4 +1,4 @@
-package com.tms.api.users.exception;
+package com.tms.api.users.util.exception;
 
 import lombok.NoArgsConstructor;
 

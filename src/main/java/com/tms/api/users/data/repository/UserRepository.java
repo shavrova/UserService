@@ -1,6 +1,6 @@
-package com.tms.api.users.repository;
+package com.tms.api.users.data.repository;
 
-import com.tms.api.users.entity.User;
+import com.tms.api.users.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

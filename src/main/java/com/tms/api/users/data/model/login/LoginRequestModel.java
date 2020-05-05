@@ -1,4 +1,4 @@
-package com.tms.api.users.model.login;
+package com.tms.api.users.data.model.login;
 
 import lombok.Getter;
 import lombok.Setter;

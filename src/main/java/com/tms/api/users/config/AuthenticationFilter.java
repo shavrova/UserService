@@ -1,4 +1,4 @@
-package com.tms.api.users.filter;
+package com.tms.api.users.config;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,9 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.tms.api.users.dto.UserDto;
-import com.tms.api.users.model.login.LoginRequestModel;
-import com.tms.api.users.service.UserService;
+import com.tms.api.users.data.dto.UserDto;
+import com.tms.api.users.data.model.login.LoginRequestModel;
+import com.tms.api.users.service.user.UserService;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

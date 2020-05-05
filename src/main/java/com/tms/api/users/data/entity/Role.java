@@ -1,4 +1,4 @@
-package com.tms.api.users.entity;
+package com.tms.api.users.data.entity;
 
 import lombok.*;
 

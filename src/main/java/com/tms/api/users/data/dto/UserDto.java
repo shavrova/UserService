@@ -1,13 +1,13 @@
-package com.tms.api.users.dto;
+package com.tms.api.users.data.dto;
 
-import com.tms.api.users.entity.Role;
+import com.tms.api.users.data.model.test.TestResponseModel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -23,5 +23,6 @@ public class UserDto implements Serializable {
     private String encryptedPassword;
     private Date createdAt;
     private Date updatedAt;
-    private Collection<Role> roles;
+    // private Collection<Role> roles;
+    private List<TestResponseModel> userTests;
 }

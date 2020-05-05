@@ -1,4 +1,4 @@
-package com.tms.api.users.entity;
+package com.tms.api.users.data.entity;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,10 +19,10 @@ import java.util.Date;
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User extends BaseEntity implements Serializable {
 
-    @Column(nullable = false, length = 50, name = "first_name")
+    @Column(nullable = false, name = "first_name")
     private String firstName;
 
-    @Column(nullable = false, length = 50, name = "last_name")
+    @Column(nullable = false, name = "last_name")
     private String lastName;
 
     @Column(nullable = false, name = "email")

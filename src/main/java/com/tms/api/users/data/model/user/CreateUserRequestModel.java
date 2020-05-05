@@ -1,4 +1,4 @@
-package com.tms.api.users.model.user;
+package com.tms.api.users.data.model.user;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 @Setter
 @ToString
 public class CreateUserRequestModel {
+
     @Size(min = 2, max = 50, message = "First name size must been between 2 and 50 characters")
     @NotEmpty(message = "First name cannot be empty")
     private String firstName;

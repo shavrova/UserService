@@ -1,4 +1,4 @@
-package com.tms.api.users.exception;
+package com.tms.api.users.util.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +19,12 @@ public class RestExceptionHandler {
         ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
-
-    @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-        ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exc.getMessage());
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
+//
+//    @ExceptionHandler
+//    public ResponseEntity<ErrorResponse> handleException(Exception exc) {
+//        ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exc.getMessage());
+//        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//    }
 
 }
 
