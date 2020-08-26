@@ -21,8 +21,10 @@ public class UserDto implements Serializable {
     private String password;
     private String userId;
     private String encryptedPassword;
+    private Integer role;
+    private Integer status;
+    private Boolean deleted;
     private Date createdAt;
     private Date updatedAt;
-    // private Collection<Role> roles;
     private List<TestResponseModel> userTests;
 }

@@ -9,6 +9,11 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
+/*
+//todo remove @Column (nullable and name)
+ */
+
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,28 +24,35 @@ import java.util.Date;
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User extends BaseEntity implements Serializable {
 
-    @Column(nullable = false, name = "first_name")
+    @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false, name = "last_name")
+    @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false, name = "email")
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false, name = "encrypted_password")
     private String encryptedPassword;
 
-    @Column(nullable = false, unique = true, name = "user_id")
+    @Column(nullable = false, unique = true)
     private String userId;
 
     @CreationTimestamp
-    @Column(name = "created_at")
     private Date createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
     private Date updatedAt;
+
+    private String imageUrl;
+
+    //TODO: use List<> if need to set USER, ADMIN roles to admin
+    private Integer role;
+
+    private Integer status;
+
+    private Boolean deleted;
+
 
     @PrePersist
     public void prePersist() {
@@ -52,14 +64,15 @@ public class User extends BaseEntity implements Serializable {
         updatedAt = new Date();
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+//    //TODO: make roles enum
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "user_role",
+//            joinColumns = @JoinColumn(
+//                    name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "role_id", referencedColumnName = "id"))
+//    private Collection<Role> roles;
 
     public User(String firstName, String lastName, String email, String encryptedPassword) {
         this.firstName = firstName;
@@ -73,6 +86,5 @@ public class User extends BaseEntity implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.encryptedPassword = encryptedPassword;
-        this.roles = roles;
     }
 }

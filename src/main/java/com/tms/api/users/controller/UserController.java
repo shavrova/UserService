@@ -2,10 +2,10 @@ package com.tms.api.users.controller;
 
 
 import com.tms.api.users.data.dto.UserDto;
-import com.tms.api.users.service.mapper.UserMapper;
 import com.tms.api.users.data.model.user.CreateUserRequestModel;
 import com.tms.api.users.data.model.user.UpdateUserRequestModel;
 import com.tms.api.users.data.model.user.UserResponseModel;
+import com.tms.api.users.service.mapper.UserMapper;
 import com.tms.api.users.service.user.UserService;
 import com.tms.api.users.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class UserController {
         return "Secret: " + env.getProperty("jwt.secret") + "\ntest.prop = " + env.getProperty("test.prop");
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(Constant.PATH_VARIABLE_ID)
     public ResponseEntity<UserResponseModel> getUser(@PathVariable("id") String id) {
         return ResponseEntity.ok(mapper.createResponseFromDto(service.getUser(id)));
     }
@@ -63,7 +63,7 @@ public class UserController {
         return ResponseEntity.ok(mapper.createResponseFromDto(dto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(Constant.PATH_VARIABLE_ID)
     public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
         service.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -16,10 +16,10 @@ public class UpdateUserRequestModel {
     @NotNull
     private String userId;
 
-    @Size(min = 2, max = 50, message = "First name size must been between 2 and 50 characters")
+    @Size(min = 2, max = 50, message = "{first-name.size}")
     private String firstName;
 
-    @Size(min = 2, max = 50, message = "Last name size must been between 2 and 50 characters")
+    @Size(min = 2, max = 50, message = "{last-name.size}")
     private String lastName;
 
     @Email

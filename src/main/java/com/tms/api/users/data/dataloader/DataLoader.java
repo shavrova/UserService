@@ -32,7 +32,7 @@ public class DataLoader implements ApplicationRunner {
                 .encryptedPassword(bCryptPasswordEncoder.encode("12345678"))
                 .createdAt(new Date())
                 .updatedAt(new Date())
-                .roles(Collections.singletonList(new Role("ADMIN")))
+               // .role(Collections.singletonList(new Role("ADMIN")))
                 .build();
         try {
             repository.save(user);
