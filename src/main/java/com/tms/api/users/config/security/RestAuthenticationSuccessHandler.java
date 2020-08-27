@@ -1,5 +1,7 @@
 package com.tms.api.users.config.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tms.api.users.config.security.model.TokenResponse;
 import com.tms.api.users.config.security.utils.JwtTool;
 import com.tms.api.users.data.dto.UserDto;
 import com.tms.api.users.service.user.UserService;
@@ -34,13 +36,10 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
             throws IOException, ServletException {
         log.info("authentication.getPrincipal() object : " + authentication.getPrincipal());
         UserDto userDto = userService.getUserDetailsByEmail(((User) authentication.getPrincipal()).getUsername());
-
         String token = jwtTool.generateToken(userDto);
-        response.setHeader("token", token);
-        //TODO: sent token in body instead of header. Fix this in gateway
-//        TokenResponse tokenResponse = new TokenResponse(token);
-//        response.getWriter().write(new ObjectMapper().writeValueAsString(tokenResponse));
-//        response.getWriter().flush();
-//        response.getWriter().close();
+        TokenResponse tokenResponse = new TokenResponse(token);
+        response.getWriter().write(new ObjectMapper().writeValueAsString(tokenResponse));
+        response.getWriter().flush();
+        response.getWriter().close();
     }
 }

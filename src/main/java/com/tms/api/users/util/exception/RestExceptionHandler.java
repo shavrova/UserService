@@ -37,7 +37,6 @@ public class RestExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(BadCredentialsException ex) {
-        log.info("inside handleException(BadCredentialsException ex)");
         ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED, ex);
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
