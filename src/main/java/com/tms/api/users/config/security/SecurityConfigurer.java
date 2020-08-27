@@ -25,38 +25,26 @@ public class SecurityConfigurer {
     @AllArgsConstructor
     public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
-        //private final SystemConfig systemConfig;
-        private final LoginAuthenticationEntryPoint restAuthenticationEntryPoint;
         private final RestAuthenticationProvider restAuthenticationProvider;
-        //private final RestDetailsServiceImpl formDetailsService;
-        private final UserService userService;
         private final RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
         private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
-        // private final RestLogoutSuccessHandler restLogoutSuccessHandler;
         private final RestAccessDeniedHandler restAccessDeniedHandler;
 
-        /**
-         * @param http http
-         * @throws Exception exception
-         *                   csrf is the from submit get method
-         */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.headers().frameOptions().disable();
             http
                     .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                    .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
-                    .and().authenticationProvider(restAuthenticationProvider)
+                    .authenticationProvider(restAuthenticationProvider)
                     .authorizeRequests()
                     .antMatchers("/api/admin/**").hasRole(RoleEnum.ADMIN.getName())
-                    .antMatchers("/api/user/**").hasRole(RoleEnum.USER.getName())
+                    .antMatchers("/api/users/**").hasRole(RoleEnum.USER.getName())
                     .anyRequest().permitAll()
-                    .and().exceptionHandling().accessDeniedHandler(restAccessDeniedHandler)
+                    //.and().exceptionHandling().accessDeniedHandler(restAccessDeniedHandler)
                     .and().formLogin().disable()
                     .csrf().disable()
                     .cors();
         }
-
 
         @Bean
         public CorsConfigurationSource corsConfigurationSource() {
@@ -76,6 +64,7 @@ public class SecurityConfigurer {
         public RestLoginAuthenticationFilter authenticationFilter() throws Exception {
             RestLoginAuthenticationFilter authenticationFilter = new RestLoginAuthenticationFilter();
             authenticationFilter.setAuthenticationSuccessHandler(restAuthenticationSuccessHandler);
+            authenticationFilter.setAuthenticationFailureHandler(restAuthenticationFailureHandler);
             authenticationFilter.setAuthenticationManager(authenticationManagerBean());
             return authenticationFilter;
         }
