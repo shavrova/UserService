@@ -1,6 +1,5 @@
 package com.tms.api.users.data.dataloader;
 
-import com.tms.api.users.data.entity.Role;
 import com.tms.api.users.data.entity.User;
 import com.tms.api.users.data.repository.UserRepository;
 import org.springframework.boot.ApplicationArguments;
@@ -8,7 +7,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 

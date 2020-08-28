@@ -22,7 +22,12 @@ import java.util.Date;
 @ToString
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class User extends BaseEntity implements Serializable {
+public class User implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
     @Column(nullable = false)
     private String firstName;
@@ -44,13 +49,16 @@ public class User extends BaseEntity implements Serializable {
     @UpdateTimestamp
     private Date updatedAt;
 
+    //TODO: implement
     private String imageUrl;
 
     //TODO: use List<> if need to set USER, ADMIN roles to admin
     private Integer role;
 
+    //TODO: implement disabling/enabling user e.g. /users/{id}?status=disabled
     private Integer status;
 
+    //TODO refactor deleting user - controller/service/repository
     private Boolean deleted;
 
 
@@ -64,15 +72,6 @@ public class User extends BaseEntity implements Serializable {
         updatedAt = new Date();
     }
 
-//    //TODO: make roles enum
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "user_role",
-//            joinColumns = @JoinColumn(
-//                    name = "user_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(
-//                    name = "role_id", referencedColumnName = "id"))
-//    private Collection<Role> roles;
 
     public User(String firstName, String lastName, String email, String encryptedPassword) {
         this.firstName = firstName;
@@ -81,10 +80,4 @@ public class User extends BaseEntity implements Serializable {
         this.encryptedPassword = encryptedPassword;
     }
 
-    public User(String firstName, String lastName, String email, String encryptedPassword, Collection<Role> roles) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.encryptedPassword = encryptedPassword;
-    }
 }

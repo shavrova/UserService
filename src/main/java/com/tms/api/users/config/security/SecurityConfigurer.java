@@ -25,6 +25,7 @@ public class SecurityConfigurer {
     @AllArgsConstructor
     public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
+        private final LoginAuthenticationEntryPoint restAuthenticationEntryPoint;
         private final RestAuthenticationProvider restAuthenticationProvider;
         private final RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
         private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
@@ -35,16 +36,20 @@ public class SecurityConfigurer {
             http.headers().frameOptions().disable();
             http
                     .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    //.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
                     .authenticationProvider(restAuthenticationProvider)
                     .authorizeRequests()
-                    .antMatchers("/api/admin/**").hasRole(RoleEnum.ADMIN.getName())
-                    .antMatchers("/api/users/**").hasRole(RoleEnum.USER.getName())
+                    //TODO: move roles and role expressions to gateway
+//                    .antMatchers("/api/admin/**").hasRole(RoleEnum.ADMIN.getName())
+//                    .antMatchers("/api/users/**").hasRole(RoleEnum.USER.getName())
+                    .antMatchers("/**").hasIpAddress("192.168.1.50")
                     .anyRequest().permitAll()
                     //.and().exceptionHandling().accessDeniedHandler(restAccessDeniedHandler)
                     .and().formLogin().disable()
                     .csrf().disable()
                     .cors();
         }
+
 
         @Bean
         public CorsConfigurationSource corsConfigurationSource() {

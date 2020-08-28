@@ -38,6 +38,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         UserDto userDto = userService.getUserDetailsByEmail(((User) authentication.getPrincipal()).getUsername());
         String token = jwtTool.generateToken(userDto);
         TokenResponse tokenResponse = new TokenResponse(token);
+        response.setContentType("application/json");
         response.getWriter().write(new ObjectMapper().writeValueAsString(tokenResponse));
         response.getWriter().flush();
         response.getWriter().close();
