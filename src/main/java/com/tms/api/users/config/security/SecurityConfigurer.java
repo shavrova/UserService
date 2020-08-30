@@ -46,8 +46,8 @@ public class SecurityConfigurer {
                     .anyRequest().permitAll()
                     //.and().exceptionHandling().accessDeniedHandler(restAccessDeniedHandler)
                     .and().formLogin().disable()
-                    .csrf().disable()
-                    .cors();
+                    .csrf().disable();
+                   // .cors().configurationSource(corsConfigurationSource());
         }
 
 

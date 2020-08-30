@@ -1,6 +1,8 @@
 package com.tms.api.users.data.dataloader;
 
 import com.tms.api.users.data.entity.User;
+import com.tms.api.users.data.model.user.enums.RoleEnum;
+import com.tms.api.users.data.model.user.enums.UserStatusEnum;
 import com.tms.api.users.data.repository.UserRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -30,7 +32,8 @@ public class DataLoader implements ApplicationRunner {
                 .encryptedPassword(bCryptPasswordEncoder.encode("12345678"))
                 .createdAt(new Date())
                 .updatedAt(new Date())
-               // .role(Collections.singletonList(new Role("ADMIN")))
+                .status(UserStatusEnum.Active.getCode())
+                .role(RoleEnum.ADMIN.getCode())
                 .build();
         try {
             repository.save(user);

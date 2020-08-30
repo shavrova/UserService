@@ -8,6 +8,7 @@ import com.tms.api.users.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
                                         HttpServletResponse response,
                                         Authentication authentication)
             throws IOException, ServletException {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("authentication.getPrincipal() object : " + authentication.getPrincipal());
         UserDto userDto = userService.getUserDetailsByEmail(((User) authentication.getPrincipal()).getUsername());
         String token = jwtTool.generateToken(userDto);

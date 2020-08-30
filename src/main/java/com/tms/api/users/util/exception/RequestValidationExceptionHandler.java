@@ -22,7 +22,8 @@ public class RequestValidationExceptionHandler extends ResponseEntityExceptionHa
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         final List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-        Map<String, String> errorsMap = fieldErrors.stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+        Map<String, String> errorsMap = fieldErrors.stream()
+                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage, (field1, field2) -> field1));
         return new ResponseEntity(errorsMap.isEmpty() ? ex : errorsMap, headers, status);
     }
 

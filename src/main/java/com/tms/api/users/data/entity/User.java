@@ -29,13 +29,11 @@ public class User implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String encryptedPassword;
