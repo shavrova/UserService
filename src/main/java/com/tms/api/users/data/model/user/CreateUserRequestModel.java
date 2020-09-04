@@ -15,22 +15,22 @@ import javax.validation.constraints.*;
 })
 public class CreateUserRequestModel {
 
-    @Size(min = 2, max = 50, message = "{first-name.size}")
-    @NotNull(message = "{first-name.required}")
-    private String firstName;
+@Size(min = 2, max = 50, message = "{first-name.size}")
+@NotNull(message = "{first-name.required}")
+private String firstName;
 
-    @Size(min = 2, max = 50, message = "{last-name.size}")
-    @NotNull(message = "{last-name.required}")
-    private String lastName;
+@Size(min = 2, max = 50, message = "{last-name.size}")
+@NotNull(message = "{last-name.required}")
+private String lastName;
 
-    @Email(message = "{email.invalid}")
-    @NotBlank(message = "{email.empty}")
-    private String email;
+@Email(message = "{email.invalid}")
+@NotBlank(message = "{email.empty}")
+private String email;
 
-    @NotNull(message = "{password.required}")
-    @Size(min = 4, max = 20, message = "{password.length}")
-    private String password;
+@NotNull(message = "{password.required}")
+@Size(min = 4, max = 20, message = "{password.length}")
+private String password;
 
-    @NotEmpty(message = "{password.confirm}")
-    private String confirmPassword;
-}
+@NotEmpty(message = "{password.confirm}")
+private String confirmPassword;
+        }

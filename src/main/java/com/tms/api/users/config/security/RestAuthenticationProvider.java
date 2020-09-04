@@ -4,7 +4,6 @@ package com.tms.api.users.config.security;
 import com.tms.api.users.data.dto.UserDto;
 import com.tms.api.users.data.model.user.enums.RoleEnum;
 import com.tms.api.users.data.model.user.enums.UserStatusEnum;
-import com.tms.api.users.data.repository.UserRepository;
 import com.tms.api.users.service.user.UserService;
 import com.tms.api.users.util.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -44,18 +43,24 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         String email = authentication.getName();//email from request
         String password = authentication.getCredentials().toString();//password from request (not encoded)
 
+        if (email == null || email.trim().isEmpty()) {
+            throw new UsernameNotFoundException("Email is required");
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            throw new UsernameNotFoundException("Password is required");
+        }
         UserDto userDto = null;
         try {
             userDto = userService.getUserDetailsByEmail(email);
-        }catch (ResourceNotFoundException ex){
+        } catch (ResourceNotFoundException ex) {
             log.error("email: " + email);
-            throw new UsernameNotFoundException("Please provide valid email");
+            throw new UsernameNotFoundException("Email is invalid");
         }
 
-        if (password == null ||!bCryptPasswordEncoder.matches(password, userDto.getEncryptedPassword())){
-            throw new BadCredentialsException("Please provide valid password");
+        if (password == null || !bCryptPasswordEncoder.matches(password, userDto.getEncryptedPassword())) {
+            throw new BadCredentialsException("Password is invalid");
         }
-
         if (UserStatusEnum.fromCode(userDto.getStatus()) == UserStatusEnum.Disabled) {
             throw new LockedException("Account disabled");
         }
