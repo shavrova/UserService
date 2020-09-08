@@ -30,6 +30,9 @@ public class JwtTool {
         log.info("userId: " + user.getUserId());
         claims.put("userId", user.getUserId());
 
+        log.info("userFullName: " + user.getUserId());
+        claims.put("userFullName", user.getFirstName() + " " + user.getLastName());
+
         log.info("role: " + RoleEnum.fromCode(user.getRole()));
         claims.put("role", RoleEnum.fromCode(user.getRole()));
         return generateToken(claims);
