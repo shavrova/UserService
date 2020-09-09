@@ -1,10 +1,12 @@
 package com.tms.api.users.data.entity;
 
+import com.tms.api.users.config.security.model.AuthProvider;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -58,6 +60,15 @@ public class User implements Serializable {
 
     //TODO refactor deleting user - controller/service/repository
     private Boolean deleted;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
+
+//    @Column(nullable = false)
+//    private Boolean emailVerified = true;
 
 
     @PrePersist

@@ -1,5 +1,9 @@
 package com.tms.api.users.config.security;
 
+import com.tms.api.users.config.security.oauth2.CustomOAuth2UserService;
+import com.tms.api.users.config.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.tms.api.users.config.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.tms.api.users.config.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import com.tms.api.users.data.model.user.enums.RoleEnum;
 import com.tms.api.users.service.user.UserService;
 import lombok.AllArgsConstructor;
@@ -9,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -19,7 +24,7 @@ import java.util.Collections;
 @Slf4j
 @Configuration
 @EnableWebSecurity
-public class SecurityConfigurer {
+public class SecurityConfig {
 
     @Configuration
     @AllArgsConstructor
@@ -30,24 +35,38 @@ public class SecurityConfigurer {
         private final RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
         private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
         private final RestAccessDeniedHandler restAccessDeniedHandler;
+        private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+        private final CustomOAuth2UserService customOAuth2UserService;
+        private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+        private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.headers().frameOptions().disable();
+            http.formLogin().disable();
+            http.csrf().disable();
             http
                     .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                     //.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
                     .authenticationProvider(restAuthenticationProvider)
                     .authorizeRequests()
-                    //TODO: move roles and role expressions to gateway
-//                    .antMatchers("/api/admin/**").hasRole(RoleEnum.ADMIN.getName())
-//                    .antMatchers("/api/users/**").hasRole(RoleEnum.USER.getName())
-                    .antMatchers("/**").hasIpAddress("192.168.1.50")
-                    .anyRequest().permitAll()
-                    //.and().exceptionHandling().accessDeniedHandler(restAccessDeniedHandler)
-                    .and().formLogin().disable()
-                    .csrf().disable();
-                   // .cors().configurationSource(corsConfigurationSource());
+                    //.antMatchers("/**").hasIpAddress("192.168.1.50").anyRequest().permitAll()
+                    .antMatchers("/api/login").permitAll()
+                    .antMatchers("/api/register").permitAll()
+                    .antMatchers("/auth/**", "/oauth2/**")
+                    .permitAll()
+                    .and().oauth2Login().authorizationEndpoint().baseUri("/oauth2/authorize").authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository)
+
+                .and()
+                    .redirectionEndpoint()
+                        .baseUri("/oauth2/callback/*")
+                        .and()
+                    .userInfoEndpoint()
+                        .userService(customOAuth2UserService)
+                        .and()
+                    .successHandler(oAuth2AuthenticationSuccessHandler)
+                    .failureHandler(oAuth2AuthenticationFailureHandler);
+
         }
 
 
@@ -73,7 +92,5 @@ public class SecurityConfigurer {
             authenticationFilter.setAuthenticationManager(authenticationManagerBean());
             return authenticationFilter;
         }
-
-
     }
 }

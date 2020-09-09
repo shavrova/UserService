@@ -1,5 +1,6 @@
 package com.tms.api.users.config;
 
+import com.tms.api.users.config.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import feign.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -52,4 +53,9 @@ public class ApplicationConfig {
         bean.setValidationMessageSource(messageSource());
         return bean;
     }
+
+//    @Bean
+//    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+//        return new HttpCookieOAuth2AuthorizationRequestRepository();
+//    }
 }

@@ -8,8 +8,8 @@ import com.tms.api.users.data.model.user.UserResponseModel;
 import com.tms.api.users.service.mapper.UserMapper;
 import com.tms.api.users.service.user.UserService;
 import com.tms.api.users.util.Constant;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +42,9 @@ public class UserController {
     }
 
     //TODO
+    @SneakyThrows
     @PutMapping(Constant.PATH_USER_DETAILS)
     public ResponseEntity<UserResponseModel> updateUserDetails(@Valid @RequestBody UpdateUserRequestModel createdUser) {
-        throw new NotImplementedException("PUT /api/me is not implemented");
+        throw new Exception("PUT /api/me is not implemented");
     }
 }

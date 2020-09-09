@@ -2,7 +2,7 @@ package com.tms.api.users.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tms.api.users.config.security.model.TokenResponse;
-import com.tms.api.users.config.security.utils.JwtTool;
+import com.tms.api.users.config.security.utils.JwtProvider;
 import com.tms.api.users.data.dto.UserDto;
 import com.tms.api.users.service.user.UserService;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 
     private final UserService userService;
 
-    private final JwtTool jwtTool;
+    private final JwtProvider jwtProvider;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -38,7 +38,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("authentication.getPrincipal() object : " + authentication.getPrincipal());
         UserDto userDto = userService.getUserDetailsByEmail(((User) authentication.getPrincipal()).getUsername());
-        String token = jwtTool.generateToken(userDto);
+        String token = jwtProvider.generateToken(userDto);
         TokenResponse tokenResponse = new TokenResponse(token);
         response.setContentType("application/json");
         response.getWriter().write(new ObjectMapper().writeValueAsString(tokenResponse));
