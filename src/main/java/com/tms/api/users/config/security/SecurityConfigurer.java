@@ -1,25 +1,26 @@
 package com.tms.api.users.config.security;
 
-import com.tms.api.users.data.model.user.enums.RoleEnum;
-import com.tms.api.users.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Collections;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurer {
+
+    static String gatewayUri;
+
+    @Value("${gateway.uri}")
+    public void setGateway(String uri) {
+        SecurityConfigurer.gatewayUri = uri;
+    }
 
     @Configuration
     @AllArgsConstructor
@@ -36,34 +37,13 @@ public class SecurityConfigurer {
             http.headers().frameOptions().disable();
             http
                     .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                    //.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
                     .authenticationProvider(restAuthenticationProvider)
                     .authorizeRequests()
-                    //TODO: move roles and role expressions to gateway
-//                    .antMatchers("/api/admin/**").hasRole(RoleEnum.ADMIN.getName())
-//                    .antMatchers("/api/users/**").hasRole(RoleEnum.USER.getName())
-                    .antMatchers("/**").hasIpAddress("192.168.1.50")
+                    .antMatchers("/**").hasIpAddress(gatewayUri)
                     .anyRequest().permitAll()
-                    //.and().exceptionHandling().accessDeniedHandler(restAccessDeniedHandler)
                     .and().formLogin().disable()
                     .csrf().disable();
-                   // .cors().configurationSource(corsConfigurationSource());
         }
-
-
-        @Bean
-        public CorsConfigurationSource corsConfigurationSource() {
-            final CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setMaxAge(3600L);
-            configuration.setAllowedOrigins(Collections.singletonList("*"));
-            configuration.setAllowedMethods(Collections.singletonList("*"));
-            configuration.setAllowCredentials(true);
-            configuration.setAllowedHeaders(Collections.singletonList("*"));
-            final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/api/**", configuration);
-            return source;
-        }
-
 
         @Bean
         public RestLoginAuthenticationFilter authenticationFilter() throws Exception {
@@ -73,7 +53,5 @@ public class SecurityConfigurer {
             authenticationFilter.setAuthenticationManager(authenticationManagerBean());
             return authenticationFilter;
         }
-
-
     }
 }
